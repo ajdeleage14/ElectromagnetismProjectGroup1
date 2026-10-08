@@ -12,27 +12,29 @@ for z = z_values
    Ez = (1/(4*pi*epsilon0)) * Q * z * (1/(d*d*d));
    Ez_exact = [Ez_exact, Ez];
 end
-
+figure;
+plot(z_values, Ez_exact, "b-", "LineWidth", 1.5);
+title("Z value vs Electric Field Using Analytical Method");
 Ez_Numerical = zeros(length(Nlist), length(z_values));
 error = zeros(length(Nlist), length(z_values));
 for j = 1:length(Nlist)
-    n = Nlist(j)
+    n = Nlist(j);
     Ez_Numerical(j, :) = numericalSolution(n);
     figure;
-    plot(z_values, Ez_exact, "b-", "LineWidth", 1.5);
-    hold on;
     plot(z_values, Ez_Numerical(j, :), "g-", "LineWidth", 1.5);
-    hold off;
+    title("Z value vs Electric Field Using Numerical Method (n = " + n + ")");
     error(j, :) = abs(Ez_Numerical(j, :) - Ez_exact);
     for i = 1:length(error(1, :))
         error(j, i) = 100*error(j, i)/Ez_exact(i);
     end
     figure;
     plot(z_values, error(j, :), "r-", "LineWidth", 1.5);
+    title("Z value vs Percent Error (n = " + n + ")");
 end
 
 figure;
 plot(Nlist, error(:, 20)', "k-");
+title("N value vs Percent Error for z = 0.2");
 
 
 
